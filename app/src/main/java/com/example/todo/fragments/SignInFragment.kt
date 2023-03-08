@@ -45,7 +45,9 @@ class SignInFragment : Fragment() {
         binding.nextBtn.setOnClickListener{
             val email = binding.emailEt.text.toString().trim()
             val pass = binding.passEt.text.toString().trim()
+
             if (email.isNotEmpty() && pass.isNotEmpty() ){
+                binding.progressBar.visibility = View.VISIBLE
                 auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(
                     OnCompleteListener {
                         if(it.isSuccessful){
@@ -53,9 +55,12 @@ class SignInFragment : Fragment() {
                             navControl.navigate(R.id.action_signInFragment_to_homeFragment)
                         }else{
                             Toast.makeText(context, it.exception?.message, Toast.LENGTH_SHORT).show()
+                            binding.progressBar.visibility = View.GONE
                         }
                     }
                 )
+            }else{
+                Toast.makeText(context, "Empty fields", Toast.LENGTH_SHORT).show()
             }
         }
     }
